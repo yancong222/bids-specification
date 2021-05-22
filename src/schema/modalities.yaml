@@ -27,3 +27,7 @@ pet:
   name: Positron Emission Tomography
   datatypes:
     - pet
+fnirs:
+  name: Functional Near Infrared Spectroscopy
+  datatypes:
+    - fnirs
