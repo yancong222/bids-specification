@@ -110,20 +110,22 @@ Generic fields which SHOULD be present: For consistency between studies and inst
 
 Specific fNIRS specific fields that MUST be present:
 
-| **Key name**            | **Requirement level**                               | **Data type**     | **Description**                                                                                                                                                                                                                                                                                       |
-| ----------------------- | --------------------------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SamplingFrequency       | REQUIRED                                            | [number][] or n/a | Sampling frequency (in Hz) of all the data in the recording, regardless of their type (for example, 12).  If individual channels have different sampling rates then the field here should be specified as “n/a” and the values  should be specified in the sampling_frequency column in channels.tsv. |
-| NIRSChannelCount        | REQUIRED                                            | [number][]        | Number of fNIRS channels.                                                                                                                                                                                                                                                                             |
-| NIRSSourceOptodeCount   | REQUIRED                                            | [number][]        | Number of fNIRS sources.                                                                                                                                                                                                                                                                              |
-| NIRSDetectorOptodeCount | REQUIRED                                            | [number][]        | Number of fNIRS detectors.                                                                                                                                                                                                                                                                            |
-| ACCELChannelCount       | RECOMMENDED but REQUIRED if any channel type is ACC | [number][]        | Number of accelerometer channels                                                                                                                                                                                                                                                                      |
+| **Key name**            | **Requirement level**                                | **Data type**     | **Description**                                                                                                                                                                                                                                                                                       |
+| ----------------------- | ---------------------------------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SamplingFrequency       | REQUIRED                                             | [number][] or n/a | Sampling frequency (in Hz) of all the data in the recording, regardless of their type (for example, 12).  If individual channels have different sampling rates then the field here should be specified as “n/a” and the values  should be specified in the sampling_frequency column in channels.tsv. |
+| NIRSChannelCount        | REQUIRED                                             | [number][]        | Number of fNIRS channels.                                                                                                                                                                                                                                                                             |
+| NIRSSourceOptodeCount   | REQUIRED                                             | [number][]        | Number of fNIRS sources.                                                                                                                                                                                                                                                                              |
+| NIRSDetectorOptodeCount | REQUIRED                                             | [number][]        | Number of fNIRS detectors.                                                                                                                                                                                                                                                                            |
+| ACCELChannelCount       | RECOMMENDED but REQUIRED if any channel type is ACC  | [number][]        | Number of accelerometer channels                                                                                                                                                                                                                                                                      |
+| GYROChannelCount        | RECOMMENDED but REQUIRED if any channel type is GYRO | [number][]        | Number of gyrometer channels                                                                                                                                                                                                                                                                          |
+| MAGNChannelCount        | RECOMMENDED but REQUIRED if any channel type is MAGN | [number][]        | Number of magnetometer channels                                                                                                                                                                                                                                                                       |
 
 Specific fNIRS fields that SHOULD be present:
 
 | **Key name**        | **Requirement level** | **Data type**     | **Description**                                                                                                                                                                                                                                                                                                                                                                       |
 | ------------------- | --------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SourceType          | RECOMMENDED           | [number][] or n/a | What is the type of source? Preferably a specific model/part number is supplied. This is a freeform description. But the following keywords are suggested. LED, LASER, VCSEL. If individual channels have different SourceTypes then the field here should be specified as “n/a”  and this column should be included in channels.tsv, and not here.                                   |
-| DetectorType        | RECOMMENDED           | [number][]        | The type of detector. This is a free from description with the following suggested terms SiPD, APD. Preferably a specific model/part number is supplied. If individual channels have different DetectorTypes then the field here should be specified as “n/a”  and this column should be included in channels.tsv, and not here.                                                      |
+| SourceType          | RECOMMENDED           | [number][] or n/a | Type of the source. Preferably a specific model/part number is supplied. This is a freeform description. But the following keywords are suggested. LED, LASER, VCSEL. If individual channels have different SourceTypes then the field here should be specified as “mixed”  and this column should be included in `optodes.tsv`, and not here.                                        |
+| DetectorType        | RECOMMENDED           | [number][]        | Type of the detector. This is a free form description with the following suggested terms SiPD, APD. Preferably a specific model/part number is supplied. If individual channels have different DetectorTypes then the field here should be specified as “mixed”  and this column should be included in `optodes.tsv`, and not here.                                                   |
 | ShortChannelCount   | RECOMMENDED           | [number][]        | The number of short channels. 0 indicates no short channels.                                                                                                                                                                                                                                                                                                                          |
 | NIRSPlacementScheme | RECOMMENDED           | [string][]        | Placement scheme of NIRS optodes. Either the name of a standardized placement system (for example, "10-20") or a list of standardized position names (for example, ["Cz", "Pz"]). This field should only be used if a cap was not used. If a standard cap was used then it should be specified in CapManufacturer and CapManufacturersModelName and this field should be set to “n/a” |
 
@@ -218,11 +220,11 @@ correspond to a [valid SNIRF data type](https://github.com/fNIRS/snirf/blob/mast
 
 ```Text
 NEEDS TO BE UPDATED!!!
-Name         type                   source      detector      wavelength           Units
-S1-D1        NIRSCWAMPLITUDE        A1            Fz              760                 V
-S1-D1        NIRSCWAMPLITUDE        A1            Fz              850                 V
-S1-D2        NIRSCWAMPLITUDE        A1            Cz              760                 V
-S2-D1        NIRSCWAMPLITUDE        A2            Fz              760                 V
+Name         type                   source      detector      wavelength_nominal   units
+S1-D1        NIRSCWAMPLITUDE        A1          Fz            760                  V
+S1-D1        NIRSCWAMPLITUDE        A1          Fz            850                  V
+S1-D2        NIRSCWAMPLITUDE        A1          Cz            760                  V
+S2-D1        NIRSCWAMPLITUDE        A2          Fz            760                  V
 
 ```
 
@@ -255,22 +257,23 @@ The following columns MUST be present:
 
 The following columns MAY be present:
 
-| **Column name** | **Requirement level**               | **Data type**       | **Definition**                                                              |
-| --------------- | ----------------------------------- | ------------------- | --------------------------------------------------------------------------- |
-| template_x      | OPTIONAL but REQUIRED if x is `n/a` | [number][] or `n/a` | Assumed or ideal position along the x axis.                                 |
-| template_y      | OPTIONAL but REQUIRED if x is `n/a` | [number][] or `n/a` | Assumed or ideal position along the y axis.                                 |
-| template_z      | OPTIONAL but REQUIRED if x is `n/a` | [number][] or `n/a` | Assumed or ideal position along the z axis.                                 |
-| description     | OPTIONAL.                           | [string][]          | Free-form text description of the optode, or other information of interest. |
+| **Column name** | **Requirement level**               | **Data type**       | **Definition**                                                                                        |
+| --------------- | ----------------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------- |
+| template_x      | OPTIONAL but REQUIRED if x is `n/a` | [number][] or `n/a` | Assumed or ideal position along the x axis.                                                           |
+| template_y      | OPTIONAL but REQUIRED if x is `n/a` | [number][] or `n/a` | Assumed or ideal position along the y axis.                                                           |
+| template_z      | OPTIONAL but REQUIRED if x is `n/a` | [number][] or `n/a` | Assumed or ideal position along the z axis.                                                           |
+| description     | OPTIONAL.                           | [string][]          | Free-form text description of the optode, or other information of interest.                           |
+| source_type     | OPTIONAL.                           | [string][]          | The type of detector. Only to be used if the field `DetectorType` in `*_fnirs.json` is set to `mixed` |
+| detector_type   | OPTIONAL.                           | [string][]          | The type of detector. Only to be used if the field `SourceType` in `*_fnirs.json` is set to `mixed`   |
 
 Example:
 
 ```Text
-NEEDS TO BE UPDATED!!!!
-name    type         x              y             z                 template_x       template_y       template_z
-A1        source      -0.0707    0.0000    -0.0707     -0.07                0.00                   0.07
-Fz        detector     0.0000      0.0714    0.0699     0.0                   0.07                   0.07
-S1       source       -0.2707    0.0200    -0.1707     -0.03                0.02                  -0.2
-D2        detector    0.0022     0.1214    0.0299       0.0                   0.12                   0.03
+name    type         x          y         z          template_x    template_y   template_z
+A1      source       -0.0707    0.0000    -0.0707    -0.07         0.00         0.07
+Fz      detector     0.0000     0.0714    0.0699     0.0           0.07         0.07
+S1      source       -0.2707    0.0200    -0.1707    -0.03         0.02         -0.2
+D2      detector     0.0022     0.1214    0.0299     0.0           0.12         0.03
 
 ```
 
